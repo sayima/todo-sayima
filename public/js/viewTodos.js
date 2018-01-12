@@ -1,4 +1,23 @@
 
+const generateSelectTag=function(allusertodos){
+  let selectTag=document.createElement("select");
+  selectTag.setAttribute('id','titles');
+  document.getElementById('selecttodo').appendChild(selectTag);
+  let options=allusertodos.map((todos)=>{
+    let oneTodo= Object.keys(todos);
+    let title=oneTodo[0];
+    return title;
+  });
+  options.forEach((title)=>{
+    let option = document.createElement("option");
+    option.setAttribute("value",title);
+    let t = document.createTextNode(title);
+    option.appendChild(t);
+    document.getElementById('titles').appendChild(option);
+  });
+};
+
+
 const getFormattedTodos=function(allusertodos){
   let content=` <pre> `;
   allusertodos.map(function(element){
@@ -23,6 +42,7 @@ const getFormattedTodos=function(allusertodos){
 let getTodoData=()=>{
   function loadTodos(){
     let allusertodos=JSON.parse(this.response);
+    generateSelectTag(allusertodos);
     document.querySelector('#yourtodo').innerHTML = getFormattedTodos(allusertodos);
   }
   var oReq = new XMLHttpRequest();
