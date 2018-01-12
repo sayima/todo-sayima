@@ -13,7 +13,9 @@ let serveStaticFile =(req,res)=>{
   if(isFile(path) && req.method=='GET'){
     let contentType=getContentType(req.url);
     let data=fs.readFileSync(path);
-      res.writeHead(200,{'Content-Type':contentType});
+    res.statusCode=200;
+    res.setHeader('Content-Type',contentType);
+      // res.writeHead(200,{'Content-Type':contentType});
       res.write(data);
       res.end();
   }
