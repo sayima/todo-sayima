@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TODO</title>
+<link rel="stylesheet" href="css/style.css">
+<script type='text/javascript' src='js/todoitem.js'></script>
+</head>
+<body>
+  <h1 style='color:black'>Home Page</h1>
+  <h3><a type="button" href="/logout" >LogOut</a></h3>
+  <hr>
+  <div id="links">
+    <ul>
+        <a href='#addtodo'><li>AddTodo</li></a>
+        <a href="#yourtodo"><li>YourTodos</li></a>
+        <a href="#Edittodo"><li>EditTodo</li></a>
+    </ul>
+  </div>
+  <hr>
+  <div class='contents'>
+    <div id='addtodo'>
+      <div class='addTodoForm'>
+      <form id='addtodoform' action='addtodo' method='post'>
+    Titile:<br>
+    <input type="text" id="title" name="title" required>
+    <br>
+    Description:<br>
+    <textarea id="description" name="description"  rows="5" cols="10" required></textarea>
+    <br>
+    <ul id="dynamicboxes">
+      <li onclick="generateTextField()">AddTodoItem</li>
+    </ul>
+    <br>
+    <div>
+    </div>
+    <button id='submit'>Add My Todo</button>
+      </form>
+      </div>
+
+
+    </div>
+    <div id='yourtodo'>
+
+    </div>
+    <div id='Edittodo'>
+
+    </div>
+  </div>
+
+</body>
+</html>

@@ -15,9 +15,8 @@ let serveStaticFile =(req,res)=>{
     let data=fs.readFileSync(path);
     res.statusCode=200;
     res.setHeader('Content-Type',contentType);
-      // res.writeHead(200,{'Content-Type':contentType});
-      res.write(data);
-      res.end();
+    res.write(data);
+    res.end();
   }
 };
 
