@@ -24,6 +24,17 @@ let th = require('./testHelper.js');
       })
     })
   })
+  describe('GET /home.html',()=>{
+    it('gives the home page',done=>{
+      request(app,{method:'GET',url:'/home.html'},res=>{
+        th.status_is_ok(res);
+        th.content_type_is(res,'text/html');
+        th.body_contains(res,'Home Page');
+        done();
+      })
+    })
+  })
+
 
   describe('app',()=>{
   describe('GET /bad',()=>{
@@ -44,7 +55,18 @@ let th = require('./testHelper.js');
           done();
         })
       })
-    })
+  })
+
+  describe('GET /js/viewTodos.js',()=>{
+      it('serves the javascript source',done=>{
+        request(app,{method:'GET',url:'/js/viewTodos.js'},res=>{
+          th.status_is_ok(res);
+          th.content_type_is(res,'text/javascript');
+          th.body_contains(res,'getFormattedTodos');
+          done();
+        })
+      })
+  })
 
     describe('GET /index.html',()=>{
     it('serves the login page also',done=>{

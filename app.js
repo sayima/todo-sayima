@@ -13,6 +13,7 @@ app.use(lib.logRequest);
 app.use(lib.loadUser);
 app.get('/',lib.handleSlash);
 app.get('/logout',lib.handleLogout);
+app.get('/getAllTodos',lib.getAllTodos);
 app.post('/login',lib.handlePostLogin);
 app.post('/addtodo',lib.handleAddTodo);
 app.postProcess(serveStaticFile);
