@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="css/style.css">
 <script type='text/javascript' src='js/todoitem.js'></script>
 <script type='text/javascript' src='js/viewTodos.js'></script>
+<script type='text/javascript' src='js/editTodo.js'></script>
 </head>
 <body>
   <h1 style='color:black'>Home Page</h1>
@@ -14,7 +15,7 @@
     <ul>
         <a href='#addtodo'><li>AddTodo</li></a>
         <a href="#yourtodo"><li>YourTodos</li></a>
-        <a href="#Edittodo"><li>EditTodo</li></a>
+        <a href="#edittodo"><li>EditTodo</li></a>
     </ul>
   </div>
   <hr>
@@ -37,8 +38,6 @@
     <button id='submit'>Add My Todo</button>
       </form>
       </div>
-
-
     </div>
     <hr>
     <br>
@@ -47,9 +46,20 @@
     </div>
     <br>
     <hr>
-    <div id='Edittodo'>
+    <div id='edittodo'>
+      <div class='addTodoForm'>
+      <div id='selecttodo'>
+    Select Titile:
 
+
+  </div>
+  <li onclick"getFullForm()">Give Edit Form</li>
+      </div>
+      <br><br><br>
     </div>
+    <br><br><br>
+
+    <br><br><br>
   </div>
 
 </body>
