@@ -67,6 +67,15 @@ let th = require('./testHelper.js');
         })
       })
   })
+  describe('GET /getAllTodos',()=>{
+      it('serves the all todos of the specific user',done=>{
+        request(app,{method:'GET',url:'/getAllTodos',user:{userName:'sayima'}},res=>{
+          th.status_is_ok(res);
+          th.content_type_is(res,'text/javascript');
+          done();
+        })
+      })
+  })
 
     describe('GET /index.html',()=>{
     it('serves the login page also',done=>{
