@@ -16,7 +16,14 @@
 //     document.getElementById('titles').appendChild(option);
 //   });
 // };
+const makeStrike=function(event){
+  let id=event.target.id;
+  console.log("id",id);
+  var oReq = new XMLHttpRequest();
+  oReq.open("post", "/changeMark");
+  oReq.send(`id=${id}`);
 
+};
 
 const getFormattedTodos=function(allusertodos){
   let usertododata=JSON.parse(allusertodos)
@@ -29,8 +36,8 @@ const getFormattedTodos=function(allusertodos){
     `;
     let items=Object.values(element);
     for(i=2;i<items.length;i++){
-      content+=`<tr><td id="item${i-1}">Item${i-1}:</td><td>${items[i]}</td><td>
-      <a onclick="makeStrike(item${i-1})"href="/done">Done&nbsp;&nbsp;</a></td><td><a onclick="undoStrike()" href="/nodedone">NotDone</a></td></tr>
+      content+=`<tr><td>Item${i-1}:</td><td>${items[i]}</td><td>
+      <button id="${element.title}-item-${i-1}" onclick="makeStrike(event)">Done&nbsp;&nbsp;</button></td><td><button onclick="undoStrike()">NotDone</button></td></tr>
     `
     }
     content+=`<tr><td><br>
@@ -39,10 +46,6 @@ const getFormattedTodos=function(allusertodos){
   content+=`</table>`;
   return content;
 };
-
-const makeStrike=function(id){
-
-}
 
 let getTodoData=()=>{
   function loadTodos(){

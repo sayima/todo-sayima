@@ -18,6 +18,7 @@ app.get('/logout',lib.handleLogout);
 app.get('/getAllTodos',lib.getAllTodos);
 app.post('/login',lib.handlePostLogin);
 app.post('/addtodo',lib.handleAddTodo);
+app.post('/changeMark',lib.handleMarkingTodo);
 app.postProcess(serveStaticFile);
 
 module.exports = app;
