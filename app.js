@@ -13,6 +13,7 @@ app.use(lib.loadUser);
 app.use(lib.logRequest);
 app.use(lib.redirectLoggedInUserToHome);
 app.use(lib.redirectLoggedOutUserToIndex);
+app.get('/index.html',lib.handleIndex);
 app.get('/',lib.handleSlash);
 app.get('/logout',lib.handleLogout);
 app.get('/getAllTodos',lib.getAllTodos);

@@ -1,14 +1,16 @@
 let chai = require('chai');
 let assert = chai.assert;
 let request = require('./requestSimulator.js');
+let User=require('../lib/user.js');
 let app = require('../app.js');
 let th = require('./testHelper.js');
 
   describe('GET /',()=>{
-    it('redirects to index.html',done=>{
+    it('serve index.html',done=>{
       request(app,{method:'GET',url:'/'},(res)=>{
-        th.should_be_redirected_to(res,'/index.html');
-        assert.equal(res.body,"");
+        th.status_is_ok(res);
+        //th.content_type_is(res,'text/html');
+        th.body_contains(res,'ToDo....');
         done();
       })
     })
@@ -26,7 +28,7 @@ let th = require('./testHelper.js');
   })
   describe('GET /home.html',()=>{
     it('gives the home page',done=>{
-      request(app,{method:'GET',url:'/home.html',user:'{userName="sayima"}'},res=>{
+      request(app,{method:'GET',url:'/home.html',user:{name:"sayima"}},res=>{
         th.status_is_ok(res);
         th.content_type_is(res,'text/html');
         th.body_contains(res,'Home Page');
@@ -67,9 +69,10 @@ let th = require('./testHelper.js');
         })
       })
   })
-  describe.skip('GET /getAllTodos',()=>{
+  describe('GET /getAllTodos',()=>{
       it('serves the all todos of the specific user',done=>{
-        request(app,{method:'GET',url:'/getAllTodos',user:{userName:'sayima'}},res=>{
+        let sayima=new User('sayima');
+        request(app,{method:'GET',url:'/getAllTodos',user:sayima },res=>{
           th.status_is_ok(res);
           th.content_type_is(res,'text/javascript');
           done();
@@ -87,10 +90,10 @@ let th = require('./testHelper.js');
         done();
       })
     })
-    it.skip('serves the login page with message for a failed login',done=>{
-      request(app,{method:'GET',url:'/login.html',headers:{'cookie':'message=login failed'}},res=>{
+    it('serves the login page with message for a failed login',done=>{
+      request(app,{method:'GET',url:'/index.html',headers:{'cookie':'message=login failed'}},res=>{
         th.status_is_ok(res);
-        th.body_contains(res,'User Name:');
+        th.body_contains(res,'ToDo....');
         th.body_contains(res,'login failed');
         th.should_not_have_cookie(res,'message');
         done();
