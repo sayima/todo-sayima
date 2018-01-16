@@ -9,8 +9,15 @@ let th = require('./testHelper.js');
     it('serve index.html',done=>{
       request(app,{method:'GET',url:'/'},(res)=>{
         th.status_is_ok(res);
-        //th.content_type_is(res,'text/html');
+        th.content_type_is(res,'text/html');
         th.body_contains(res,'ToDo....');
+        done();
+      })
+    })
+    it('serve home.html if user is already logged in.',done=>{
+      let sayima=new User('sayima');
+      request(app,{method:'GET',url:'/',user:sayima},(res)=>{
+        th.should_be_redirected_to(res,'/home.html');
         done();
       })
     })
