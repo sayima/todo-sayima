@@ -1,6 +1,5 @@
-// let Users=require('./users.js');
-let getUsersData=function(users){
-  // let users=new Users();
+
+let getUsersData=function(users){  
   users.addUser('sayima');
   users.addUser('pragya');
   users.addTodoOf('sayima','office','after meeting');

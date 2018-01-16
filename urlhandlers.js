@@ -1,13 +1,15 @@
 let lib={};
-let UserHandler=require('./userhandler.js');
-let userHandler=new UserHandler();
-
+let getUsersData=require('./model/userCreation.js').getUsersData;
 let fs=require('fs');
-const timeStamp = require('../serverUtility/time.js').timeStamp;
+let Users=require('./model/users.js');
+let users=new Users();
+let usersData=getUsersData(users);
+users.loadAllUsers(usersData.users);
+const timeStamp = require('./serverUtility/time.js').timeStamp;
 let toS = o=>JSON.stringify(o,null,2);
 
 const getRegisteredUser=function(){
-  return userHandler.getAllUsers();
+  return users.getAllUsers();
 }
 
  lib.logRequest = (req,res)=>{
@@ -31,34 +33,43 @@ lib.loadUser = (req,res)=>{
   }
 };
 
-lib.handleSlash=function(req,res){
-  let url=req.user ?'/home.html':'/index.html';
-  res.redirect(url);
-};
-
 lib.handleLogout=(req,res)=>{
   if(req.user)
     delete req.user;
   res.setHeader('Set-Cookie',`sessionid=0; Expires=${new Date(1).toUTCString()}`);
   res.redirect('/index.html');
 };
+lib.handleIndex=(req,res)=>{
+  let indexPage=fs.readFileSync('public/index.html','utf8');
+  res.setHeader('Content-Type','text/html');
+  res.write(req.cookies.message||" ");
+  res.write(indexPage);
+  res.end();
+};
+lib.handleSlash=function(req,res){
+  let indexPage=fs.readFileSync('public/index.html','utf8');
+  res.setHeader('Content-Type','text/html');
+  res.write(indexPage);
+  res.end();
+};
+
 
 lib.handlePostLogin =(req,res)=>{
   let registered_users=getRegisteredUser();
-  let user = registered_users.find(u=>u.userName==req.body.userName);
+  let user = registered_users.find(u=>u.name==req.body.userName);
   if(!user) {
     res.setHeader('Set-Cookie',`message=login failed; Max-Age=5`);
     res.redirect('/index.html');
     return;
   }
-
-  let sessionid= userHandler.addSessionIdFor(user.userName);
+  let sessionid = new Date().getTime();
+  user.sessionid = sessionid;
   res.setHeader('Set-Cookie',`sessionid=${sessionid}`);
   res.redirect('/home.html');
 };
 
 lib.redirectLoggedInUserToHome = (req,res)=>{
-  if(req.urlIsOneOf(['/index.html']) && req.user) res.redirect('/home.html');
+  if(req.urlIsOneOf(['/index.html','/']) && req.user) res.redirect('/home.html');
 };
 
 lib.redirectLoggedOutUserToIndex = (req,res)=>{
@@ -68,16 +79,23 @@ lib.redirectLoggedOutUserToIndex = (req,res)=>{
 lib.getAllTodos=function(req,res){
   res.statusCode=200;
   res.setHeader('Content-Type','text/javascript');
-  let userTodos=userHandler.getAllTodosOf(req.user.userName);
+  let userTodos=req.user.getAllTodo();
   let a=toS(userTodos);
   res.write(toS(userTodos));
   res.end();
 };
 
 const addToDatabase = function(){
-  let allData=userHandler.getAllData();
-  let datas=JSON.stringify(allData,null,2);
-  fs.writeFileSync('usertodo.json',datas);
+  let allUsers=users.getAllUsers();
+  allUsers=JSON.stringify(allUsers,null,2);
+  fs.writeFileSync('regiUser.json',allUsers);
+}
+
+const addItems=function(user,body){
+  let todoData=Object.values(body);
+  for(i=2;i<todoData.length;i++){
+    user.addItem(body.title,todoData[i]);
+  }
 }
 
 lib.handleAddTodo =(req,res)=>{
@@ -86,44 +104,33 @@ lib.handleAddTodo =(req,res)=>{
     res.redirect('/index.html');
     return;
   }
-  let userName=req.user.userName;
-  userHandler.addTodoTo(userName,req.body);
+  req.user.addTodo(req.body.title,req.body.description);
+  addItems(req.user,req.body);
   addToDatabase();
-  res.writeHead(302,{'Content-Type':'text/html','Location':'home.html'});
-  res.end();
+  res.statusCode=302;
+  res.redirect('/home.html');
 };
 
-
-const getTitleAndItemNo=function(id){
+const getTitleAndItem=function(id){
   let datas=Object.values(id)[0].split('-');
-  let titleAndItemNo={};
-  titleAndItemNo['title']=datas[0];
-  titleAndItemNo['itemNo']=datas[2];
-  return titleAndItemNo;
+  let titleAndItem={};
+  titleAndItem['title']=datas[0];
+  titleAndItem['itemText']=datas[2];
+  return titleAndItem;
 }
 
 lib.handleMarkingTodo=(req,res)=>{
-  let titleAndItemNo=getTitleAndItemNo(req.body);
-  let titleOfDoneTodo=titleAndItemNo['title'];
-  res.write('yes');
+  let titleAndItem=getTitleAndItem(req.body);
+  let title=titleAndItem['title'];
+  let item=titleAndItem['itemText'];
+  req.user.markAsDoneOf(title,item);
   res.end();
 }
+
 lib.removeTodo=(req,res)=>{
-  userHandler.removeTodoFrom(req.user.userName,req.body.title);
+  req.user.removeTodoOf(req.body.title);
   addToDatabase();
   res.end();
 };
-lib.addUser=(req,res)=>{
-  let userDetails=JSON.parse(fs.readFileSync('registeredUserData.json','utf8'));
-  userDetails.forEach((user)=>{
-    userHandler.addUser(user);
-  });
-}
-lib.addTodoData=(req,res)=>{
-  let userDetails=JSON.parse(fs.readFileSync('usertodo.json','utf8'));
-  let todos=userDetails['sayima']['todos'];
-  userHandler.loadTodosOf("sayima",todos);
-}
-lib.addUser();
-lib.addTodoData();
+
 module.exports=lib;

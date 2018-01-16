@@ -1,7 +1,7 @@
 
 const WebApp = require('./webapp');
 const fs = require('fs');
-const lib = require('./lib/handlers.js');
+const lib = require('./urlhandlers.js');
 const serveStaticFile=require('./staticFileHandler.js').serveStaticFile;
 let session = {};
 

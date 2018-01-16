@@ -1,7 +1,7 @@
 let chai=require('chai');
 let assert=chai.assert;
-let User=require('../lib/user.js');
-let Todo=require('../lib/todo.js')
+let User=require('../model/user.js');
+let Todo=require('../model/todo.js')
 let user;
 beforeEach(function(){
   user=new User('sayima');

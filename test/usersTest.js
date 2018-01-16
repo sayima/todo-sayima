@@ -1,8 +1,8 @@
 let chai=require('chai');
 let assert=chai.assert;
-let Todo=require('../lib/todo.js');
-let User=require('../lib/user.js')
-let Users=require('../lib/users.js');
+let Todo=require('../model/todo.js');
+let User=require('../model/user.js')
+let Users=require('../model/users.js');
 let users;
 beforeEach(function(){
   users=new Users();

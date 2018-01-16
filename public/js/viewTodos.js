@@ -1,21 +1,4 @@
 
-// const generateSelectTag=function(allusertodos){
-//   let selectTag=document.createElement("select");
-//   selectTag.setAttribute('id','titles');
-//   document.getElementById('selecttodo').appendChild(selectTag);
-//   let options=allusertodos.map((todos)=>{
-//     let oneTodo= Object.keys(todos);
-//     let title=oneTodo[0];
-//     return title;
-//   });
-//   options.forEach((title)=>{
-//     let option = document.createElement("option");
-//     option.setAttribute("value",title);
-//     let t = document.createTextNode(title);
-//     option.appendChild(t);
-//     document.getElementById('titles').appendChild(option);
-//   });
-// };
 const makeStrike=function(event){
   let id=event.target.id;
   var oReq = new XMLHttpRequest();
@@ -25,9 +8,12 @@ const makeStrike=function(event){
 
 const removeTodo=function(event){
   title=event.target.id;
+  const reload=function(){
+    window.location.reload();
+  }
   var oReq = new XMLHttpRequest();
   oReq.open("post", "/deleteTodo");
-  oReq.addEventListener("load",reloadComments);
+  oReq.addEventListener("load",reload);
   oReq.send(`title=${title}`);
 }
 
@@ -44,8 +30,8 @@ const getFormattedTodos=function(allusertodos){
     `;
     let items=element.items;
     for(i=0;i<items.length;i++){
-      content+=`<tr><td>Item${i}:</td><td>${items[i].text}</td><td>
-      <button id="${element.title}-item-${i}" onclick="makeStrike(event)">Done&nbsp;&nbsp;</button></td><td><button onclick="undoStrike()">NotDone</button></td></tr>
+      content+=`<tr><td>Item${i+1}:</td><td>${items[i].text}</td><td>
+      <input type="checkbox" id="${element.title}-${items[i].text}" onclick="makeStrike(event)">Done</td></tr>
     `
     }
     content+=`<tr><td><br>
