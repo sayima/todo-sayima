@@ -18,26 +18,34 @@
 // };
 const makeStrike=function(event){
   let id=event.target.id;
-  console.log("id",id);
   var oReq = new XMLHttpRequest();
   oReq.open("post", "/changeMark");
   oReq.send(`id=${id}`);
-
 };
+
+const removeTodo=function(event){
+  title=event.target.id;
+  var oReq = new XMLHttpRequest();
+  oReq.open("post", "/deleteTodo");
+  oReq.addEventListener("load",reloadComments);
+  oReq.send(`title=${title}`);
+}
+
 
 const getFormattedTodos=function(allusertodos){
   let usertododata=JSON.parse(allusertodos)
   let content=` <table> `;
   usertododata.map(function(element){
-
+    console.log(element);
     content+=`
-    <tr><td>Title:</td><td>${element.title}</td></tr>
+    <tr><td>Title:</td><td>${element.title}</td><td>
+    <button id="${element.title}" onclick="removeTodo(event)">Delete</button></td></tr>
     <tr><td>Description:</td><td>${element.description}</td></tr>
     `;
-    let items=Object.values(element);
-    for(i=2;i<items.length;i++){
-      content+=`<tr><td>Item${i-1}:</td><td>${items[i]}</td><td>
-      <button id="${element.title}-item-${i-1}" onclick="makeStrike(event)">Done&nbsp;&nbsp;</button></td><td><button onclick="undoStrike()">NotDone</button></td></tr>
+    let items=element.items;
+    for(i=0;i<items.length;i++){
+      content+=`<tr><td>Item${i}:</td><td>${items[i].text}</td><td>
+      <button id="${element.title}-item-${i}" onclick="makeStrike(event)">Done&nbsp;&nbsp;</button></td><td><button onclick="undoStrike()">NotDone</button></td></tr>
     `
     }
     content+=`<tr><td><br>
