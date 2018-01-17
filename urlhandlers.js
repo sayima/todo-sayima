@@ -14,7 +14,7 @@ lib.loadAllPrevUsers=function(){
   regUsers.loadAllUsers(JSON.parse(allData));
 }
 
- lib.logRequest = (req,res)=>{
+lib.logRequest = (req,res)=>{
   let text = ['------------------------------',
     `${timeStamp()}`,
     `${req.method} ${req.url}`,
@@ -33,6 +33,7 @@ lib.loadUser = (req,res)=>{
   if(sessionid && user){
     req.user = user;
   }
+
 };
 
 lib.handleLogout=(req,res)=>{
@@ -116,11 +117,19 @@ const getTitleAndItem=function(id){
   let datas=Object.values(id)[0].split('-');
   let titleAndItem={};
   titleAndItem['title']=datas[0];
-  titleAndItem['itemText']=datas[2];
+  titleAndItem['itemText']=datas[1];
   return titleAndItem;
 }
 
-lib.handleMarkingTodo=(req,res)=>{
+lib.handleUnDone=(req,res)=>{
+  let titleAndItem=getTitleAndItem(req.body);
+  let title=titleAndItem['title'];
+  let item=titleAndItem['itemText'];
+  req.user.markAsUnDoneOf(title,item);
+  res.end();
+}
+
+lib.handleDone=(req,res)=>{
   let titleAndItem=getTitleAndItem(req.body);
   let title=titleAndItem['title'];
   let item=titleAndItem['itemText'];

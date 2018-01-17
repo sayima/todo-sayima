@@ -9,6 +9,9 @@ class Item{
   markAsDone(){
     this.isDone=true;
   }
+  markIsDone(value){
+    this.isDone=value;
+  }
   isSameText(text){
     return this.text==text;
   }

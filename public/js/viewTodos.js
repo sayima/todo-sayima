@@ -22,7 +22,6 @@ const getFormattedTodos=function(allusertodos){
   let usertododata=JSON.parse(allusertodos)
   let content=` <table> `;
   usertododata.map(function(element){
-    console.log(element);
     content+=`
     <tr><td>Title:</td><td>${element.title}</td><td>
     <button id="${element.title}" onclick="removeTodo(event)">Delete</button></td></tr>
@@ -40,11 +39,26 @@ const getFormattedTodos=function(allusertodos){
   content+=`</table>`;
   return content;
 };
+const addStatus=function(allusertodos){
+  let allTodo=JSON.parse(allusertodos);
+  console.log(allTodo);
+
+  let element=document.querySelector('#yourtodo');
+  let checkboxes=element.querySelectorAll('input');
+  console.log(checkboxes);
+   checkboxes.forEach((element)=>{
+     let id=element.id;
+     let todo=allTodo.find(todo=>{return id.includes(todo.title)});
+     let item=todo.items.find(item=>{return id.includes(item.text)});
+     document.getElementById(id).checked=item.isDone;
+   })
+}
 
 let getTodoData=()=>{
   function loadTodos(){
     let allusertodos=this.response;
     document.querySelector('#yourtodo').innerHTML = getFormattedTodos(allusertodos);
+    addStatus(allusertodos);
   }
   var oReq = new XMLHttpRequest();
   oReq.addEventListener("load", loadTodos);

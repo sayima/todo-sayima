@@ -20,9 +20,10 @@ app.get('/logout',lib.handleLogout);
 app.get('/getAllTodos',lib.getAllTodos);
 app.post('/login',lib.handlePostLogin);
 app.post('/addtodo',lib.handleAddTodo);
-app.post('/changeMark',lib.handleMarkingTodo);
+app.post('/changeToDone',lib.handleDone);
+app.post('/changeToUndone',lib.handleUnDone);
 app.post('/deleteTodo',lib.removeTodo);
-app.postProcess(serveStaticFile);
 app.postProcess(lib.addToDatabase);
+app.postProcess(serveStaticFile);
 
 module.exports = app;
