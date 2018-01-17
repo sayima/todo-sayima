@@ -43,6 +43,13 @@ class Users{
   }
   loadAllUsers(users){
     this.users=users;
+    this.getProtoForAllUser();
+  }
+  getProtoForAllUser(){
+    this.users.forEach(user=>{
+      user.__proto__= new User().__proto__;
+      user.getProtoForAllTodos();
+    });
   }
   getAllUsers(){
     return this.users;

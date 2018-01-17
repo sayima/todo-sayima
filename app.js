@@ -8,6 +8,7 @@ let session = {};
 /*============================================================================*/
 
 /*============================================================================*/
+lib.loadAllPrevUsers();
 let app = WebApp.create();
 app.use(lib.loadUser);
 app.use(lib.logRequest);
@@ -22,5 +23,6 @@ app.post('/addtodo',lib.handleAddTodo);
 app.post('/changeMark',lib.handleMarkingTodo);
 app.post('/deleteTodo',lib.removeTodo);
 app.postProcess(serveStaticFile);
+app.postProcess(lib.addToDatabase);
 
 module.exports = app;

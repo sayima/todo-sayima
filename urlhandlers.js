@@ -1,15 +1,17 @@
 let lib={};
-let getUsersData=require('./model/userCreation.js').getUsersData;
 let fs=require('fs');
 let Users=require('./model/users.js');
-let users=new Users();
-let usersData=getUsersData(users);
-users.loadAllUsers(usersData.users);
+let regUsers=new Users();
 const timeStamp = require('./serverUtility/time.js').timeStamp;
 let toS = o=>JSON.stringify(o,null,2);
 
 const getRegisteredUser=function(){
-  return users.getAllUsers();
+  return regUsers.getAllUsers();
+}
+
+lib.loadAllPrevUsers=function(){
+  let allData=fs.readFileSync('./regiUser.json','utf8')||'[]';
+  regUsers.loadAllUsers(JSON.parse(allData));
 }
 
  lib.logRequest = (req,res)=>{
@@ -85,8 +87,8 @@ lib.getAllTodos=function(req,res){
   res.end();
 };
 
-const addToDatabase = function(){
-  let allUsers=users.getAllUsers();
+lib.addToDatabase = function(){
+  let allUsers=regUsers.getAllUsers();
   allUsers=JSON.stringify(allUsers,null,2);
   fs.writeFileSync('regiUser.json',allUsers);
 }
@@ -106,7 +108,6 @@ lib.handleAddTodo =(req,res)=>{
   }
   req.user.addTodo(req.body.title,req.body.description);
   addItems(req.user,req.body);
-  addToDatabase();
   res.statusCode=302;
   res.redirect('/home.html');
 };
@@ -129,7 +130,6 @@ lib.handleMarkingTodo=(req,res)=>{
 
 lib.removeTodo=(req,res)=>{
   req.user.removeTodoOf(req.body.title);
-  addToDatabase();
   res.end();
 };
 

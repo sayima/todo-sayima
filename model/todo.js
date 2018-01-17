@@ -26,5 +26,10 @@ class Todo{
   isSameTitle(title){
     return this.title==title;
   }
+  getProtoForAllItems(){
+    this.items.forEach(item=>{
+      item.__proto__=new Item().__proto__;
+    });
+  }
 }
 module.exports=Todo;

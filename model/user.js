@@ -35,5 +35,11 @@ class User{
     let todo=this.getTodoOf(title);
     todo.markAsUnDone(itemText)
   }
+  getProtoForAllTodos(){
+    this.todos.forEach(todo=>{
+      todo.__proto__=new Todo().__proto__;
+      todo.getProtoForAllItems();
+    });
+  }
 }
 module.exports=User;

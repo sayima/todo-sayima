@@ -44,7 +44,6 @@ const getFormattedTodos=function(allusertodos){
 let getTodoData=()=>{
   function loadTodos(){
     let allusertodos=this.response;
-    // generateSelectTag(allusertodos);
     document.querySelector('#yourtodo').innerHTML = getFormattedTodos(allusertodos);
   }
   var oReq = new XMLHttpRequest();
