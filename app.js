@@ -10,6 +10,7 @@ let session = {};
 /*============================================================================*/
 lib.loadAllPrevUsers();
 let app = WebApp.create();
+app.use(lib.separateQueryFromUrl);
 app.use(lib.loadUser);
 app.use(lib.logRequest);
 app.use(lib.redirectLoggedInUserToHome);
@@ -17,6 +18,8 @@ app.use(lib.redirectLoggedOutUserToIndex);
 app.get('/index.html',lib.handleIndex);
 app.get('/',lib.handleSlash);
 app.get('/logout',lib.handleLogout);
+app.post('/edittodo',lib.handleEditedData);
+app.post('/getTodoForEdit',lib.handlegetTodo);
 app.get('/getAllTodos',lib.getAllTodos);
 app.post('/login',lib.handlePostLogin);
 app.post('/addtodo',lib.handleAddTodo);

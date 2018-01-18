@@ -113,12 +113,12 @@ describe('GET /bad',()=>{
     })
   })
 
-  describe('GET /js/viewTodos.js',()=>{
+  describe('GET /js/todoAction.js',()=>{
     it('serves the javascript source',done=>{
-      request(app,{method:'GET',url:'/js/viewTodos.js'},res=>{
+      request(app,{method:'GET',url:'/js/todoAction.js'},res=>{
         th.status_is_ok(res);
         th.content_type_is(res,'text/javascript');
-        th.body_contains(res,'getFormattedTodos');
+        th.body_contains(res,'window.onload=getTodoData');
         done();
       })
     })

@@ -15,6 +15,12 @@ class User{
   getAllTodo(){
     return this.todos;
   }
+  getAllTitle(){
+    let titles=this.todos.map(todo=>{
+      return todo.title;
+    });
+    return titles;
+  }
   getTodoOf(title){
     let todo=this.todos.find((todo)=>{
       return todo.isSameTitle(title);

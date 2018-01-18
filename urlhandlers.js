@@ -8,9 +8,28 @@ let toS = o=>JSON.stringify(o,null,2);
 const getRegisteredUser=function(){
   return regUsers.getAllUsers();
 }
+const getTestData=function(){
+  return [
+    {
+      "name": "pragya",
+      "todos": [
+        {
+          "title": "office",
+          "description": "before meeting",
+          "items": [
+            {
+              "text": "reset file",
+              "isDone": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
 
 lib.loadAllPrevUsers=function(){
-  let allData=fs.readFileSync('./regiUser.json','utf8')||'[]';
+  let allData=fs.existsSync('./regiUser.json')?fs.readFileSync('./regiUser.json','utf8'):getTestData();
   regUsers.loadAllUsers(JSON.parse(allData));
 }
 
@@ -87,6 +106,30 @@ lib.getAllTodos=function(req,res){
   res.write(toS(userTodos));
   res.end();
 };
+
+lib.handlegetTodo=(req,res)=>{
+  let todo=req.user.getTodoOf(req.body.title);
+  res.write(toS(todo));
+  res.end();
+};
+
+lib.handleEditedData=(req,res)=>{
+  prevTitle=req.query.split('=')[1];
+  req.user.removeTodoOf(prevTitle);
+  req.user.addTodo(req.body.title,req.body.description);
+  addItems(req.user,req.body);
+  res.statusCode=302;
+  res.redirect('/home.html');
+  res.end();
+}
+
+lib.separateQueryFromUrl=(req,res)=>{
+  if(req.url.includes('?')){
+    let datas=req.url.split('?');
+    req.url=datas[0];
+    req.query=datas[1];
+  }
+}
 
 lib.addToDatabase = function(){
   let allUsers=regUsers.getAllUsers();
