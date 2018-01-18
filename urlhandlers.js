@@ -8,10 +8,11 @@ let toS = o=>JSON.stringify(o,null,2);
 const getRegisteredUser=function(){
   return regUsers.getAllUsers();
 }
+
 const getTestData=function(){
-  return [
+  return ` [
     {
-      "name": "pragya",
+      "name": "sayima",
       "todos": [
         {
           "title": "office",
@@ -25,7 +26,7 @@ const getTestData=function(){
         }
       ]
     }
-  ]
+  ]`;
 }
 
 lib.loadAllPrevUsers=function(){
@@ -43,7 +44,6 @@ lib.logRequest = (req,res)=>{
   fs.appendFile('request.log',text,()=>{});
   console.log(`${req.method} ${req.url}`);
 };
-
 
 lib.loadUser = (req,res)=>{
   let registered_users=getRegisteredUser();
@@ -78,6 +78,7 @@ lib.handleSlash=function(req,res){
 
 lib.handlePostLogin =(req,res)=>{
   let registered_users=getRegisteredUser();
+  
   let user = registered_users.find(u=>u.name==req.body.userName);
   if(!user) {
     res.setHeader('Set-Cookie',`message=login failed; Max-Age=5`);
