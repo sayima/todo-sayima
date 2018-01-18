@@ -92,15 +92,57 @@ describe('app',()=>{
     })
   })
 
-
-describe('GET /bad',()=>{
-  it('responds with 404',done=>{
-    request(app,{method:'GET',url:'/bad'},(res)=>{
-      assert.equal(res.statusCode,404);
-      done();
+  describe('GET /logout',()=>{
+    it('redirect to index.html and removed cookies for valid user ',done=>{
+      request(app,{method:'GET',url:'/logout',user:{name:"sayima"},headers:{'cookie':'sessionid=0'}},(res)=>{
+        th.should_be_redirected_to(res,'/index.html');
+        th.should_have_expiring_cookie(res,'sessionid','0');
+        done();
+      })
+    })
+    it('redirect to index.html if there is no user',done=>{
+      request(app,{method:'GET',url:'/logout',headers:{'cookie':'sessionid=0'}},(res)=>{
+        th.should_be_redirected_to(res,'/index.html');
+        th.should_have_expiring_cookie(res,'sessionid','0');
+        done();
+      })
     })
   })
-})
+  describe.skip('POST /deletetodo',()=>{
+    it('should remove the todo of given title',done=>{
+      let sayima=new User();
+      sayima.addTodo('office','after catchup');
+      assert.isOk(JSON.stringify(sayima).includes('office'),`user contain title`);
+      request(app,{method:'POST',url:'/deletetodo',user:sayima,body:'title=office'},(res)=>{
+        done();
+      })
+    })
+  })
+
+  describe('GET /getAllTodos',()=>{
+    it('serves the all todos of the specific user',done=>{
+      let sayima=new User('sayima');
+      sayima.addTodo('office','before meeting');
+      sayima.addItem('office','call Tom');
+      request(app,{method:'GET',url:'/getAllTodos',user:sayima },res=>{
+        th.status_is_ok(res);
+        th.content_type_is(res,'text/javascript');
+        th.body_contains(res,'before meeting');
+        th.body_contains(res,'call Tom');
+        done();
+      })
+    })
+  })
+
+  describe('POST /addtodo',()=>{
+    it('added new todo to the given user',done=>{
+      let sayima=new User('sayima');
+      request(app,{method:'POST',url:'/addtodo',user:sayima,body:'title=office&description=before+meeting&item1=catchup+with+Tom'},res=>{
+        th.should_be_redirected_to(res,'/home.html');
+        done();
+      })
+    })
+  })
 
   describe('GET /js/todoitem.js',()=>{
     it('serves the javascript source',done=>{
@@ -123,22 +165,23 @@ describe('GET /bad',()=>{
       })
     })
   })
-  describe('GET /getAllTodos',()=>{
-    it('serves the all todos of the specific user',done=>{
+
+  describe('POST /edittodo?id=office',()=>{
+    it('edit the todo of given title',done=>{
       let sayima=new User('sayima');
-      request(app,{method:'GET',url:'/getAllTodos',user:sayima },res=>{
-        th.status_is_ok(res);
-        th.content_type_is(res,'text/javascript');
-        done();
+      sayima.addTodo('office','after catchup');
+      request(app,{method:'POST',url:'/edittodo?id=office',user:sayima,body:'title=office&description=before+meeting'},res=>{
+        th.should_be_redirected_to(res,'/home.html');
       })
+      done();
     })
   })
 
-  describe('POST /addtodo',()=>{
-    it('added new todo to the given user',done=>{
-      let sayima=new User('sayima');
-      request(app,{method:'POST',url:'/addtodo',user:sayima,body:'title=office&description=before+meeting&item1=catchup+with+Tom'},res=>{
-        th.should_be_redirected_to(res,'/home.html');
+
+  describe('GET /bad',()=>{
+    it('responds with 404',done=>{
+      request(app,{method:'GET',url:'/bad'},(res)=>{
+        assert.equal(res.statusCode,404);
         done();
       })
     })

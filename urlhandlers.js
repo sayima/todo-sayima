@@ -58,7 +58,7 @@ lib.loadUser = (req,res)=>{
 lib.handleLogout=(req,res)=>{
   if(req.user)
     delete req.user;
-  res.setHeader('Set-Cookie',`sessionid=0; Expires=${new Date(1).toUTCString()}`);
+  res.setHeader('Set-Cookie',`sessionid=0; Max-Age=5`);
   res.redirect('/index.html');
 };
 lib.handleIndex=(req,res)=>{
@@ -78,7 +78,6 @@ lib.handleSlash=function(req,res){
 
 lib.handlePostLogin =(req,res)=>{
   let registered_users=getRegisteredUser();
-  
   let user = registered_users.find(u=>u.name==req.body.userName);
   if(!user) {
     res.setHeader('Set-Cookie',`message=login failed; Max-Age=5`);

@@ -5,9 +5,6 @@ const lib = require('./urlhandlers.js');
 const serveStaticFile=require('./staticFileHandler.js').serveStaticFile;
 let session = {};
 
-/*============================================================================*/
-
-/*============================================================================*/
 lib.loadAllPrevUsers();
 let app = WebApp.create();
 app.use(lib.separateQueryFromUrl);
