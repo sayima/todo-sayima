@@ -8,62 +8,77 @@
 
 </head>
 <body>
-  <h1 style='color:black'>Home Page</h1>
-  <h3><a type="button" href="/logout" >LogOut</a></h3>
-  <hr>
-  <div id="links">
-    <ul>
-        <a href='#addtodo'><li>AddTodo</li></a>
-        <a href="#yourtodo"><li>YourTodos</li></a>
-        <a href="#edittodo"><li>EditTodo</li></a>
-    </ul>
+  <div class="header">
+    <h1 style='color:black'>Things Todo</h1>
+    <h3><a type="button" href="/logout" >LogOut</a></h3>
+
+    <div id="links">
+      <ul>
+        <li><a class="active" href="#addtodo">AddTodo</a></li>
+        <li><a href="#yourtodo">YourTodos</a></li>
+        <li><a href="#edittodo">EditTodo</a></li>
+      </ul>
+    </div>
   </div>
-  <hr>
+
+
+
   <div class='contents'>
-    <div id='addtodo'>
-      Add your things to do.....
-      <hr>
-      <div class='addTodoForm'>
-      <form id='addtodoform' action='addtodo' method='post'>
-    Titile:<br>
-    <input type="text" id="title" name="title" required>
-    <br>
-    Description:<br>
-    <textarea id="description" name="description"  rows="5" cols="10" required></textarea>
-    <br>
-    <ul id="dynamicboxes">
-      <li onclick="generateTextField()">AddTodoItem</li>
-    </ul>
-    <br>
-    <div>
-    </div>
-    <button id='submit'>Add My Todo</button>
-      </form>
+    <div class='row'>
+      <div class="column">
+        <div id='addtodo'>
+          <h2>Add your todos here.....</h2>
+
+          <div class='addTodoForm'>
+          <form id='addtodoform' action='addtodo' method='post'>
+        Titile:<br>
+        <input type="text" id="title" name="title" required>
+        <br>
+        Description:<br>
+        <textarea id="description" name="description"  rows="5" cols="10" required></textarea>
+        <br>
+        <div id="dynamicboxes">
+          <button onclick="generateTextField()">AddTodoItem</button>
+        </div>
+        <br>
+        <div>
+        </div>
+        <button id='submit'>Add My Todo</button>
+          </form>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <h2>Your todos.....</h2>
+        <div id='yourtodo'>
+        </div>
+      </div>
+      <div class="column">
+        <div id='edittodo'>
+          <h2>Edit YourTodos....</h2>
+          Select Titile:
+          <div id='selecttodo'>
+
+          </div>
+          <div id='addEditForm'>
+          </div>
+          <br><br><br>
+        </div>
       </div>
     </div>
+
+    <!-- <br>
+
+
+
+
+
     <br>
-    <hr>
 
-    Things to do.....
-    <hr>
-    <div id='yourtodo'>
 
-    </div>
-    <br>
-    <hr>
-    <div id='edittodo'>
-      Edit YourTodos....<hr>
-      Select Titile:
-      <div id='selecttodo'>
-
-      </div>
-      <div id='addEditForm'>
-      </div>
-      <br><br><br>
-    </div>
     <br><br><br>
 
-    <br><br><br>
+    <br><br><br> -->
   </div>
 
 </body>
