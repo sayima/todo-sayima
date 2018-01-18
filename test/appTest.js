@@ -62,7 +62,7 @@ describe('app',()=>{
       request(app,{method:'GET',url:'/home.html',user:{name:"sayima"}},res=>{
         th.status_is_ok(res);
         th.content_type_is(res,'text/html');
-        th.body_contains(res,'Home Page');
+        th.body_contains(res,'Todo');
         done();
       })
     })

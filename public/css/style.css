@@ -21,11 +21,17 @@ li a {
 li a:hover {
     background-color: #111;
 }
-.column {
+.columnMiddle {
     float: left;
-    width: 33.33%;
+    width: 30%;
     padding: 15px;
 }
+.column {
+    float: left;
+    width: 26%;
+    padding: 15px;
+}
+
 
 .row:after {
     content: "";
@@ -33,6 +39,7 @@ li a:hover {
     clear: both;
 }
 body {
+  width: 100%;
   margin: 0;
 }
 .header {
